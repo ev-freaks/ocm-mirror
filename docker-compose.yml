@@ -1,0 +1,14 @@
+version: '2'
+services:
+  app:
+    build: .
+    expose:
+      - "5000"
+    ports:
+      - 5000:5000
+    links:
+      - db:mongodb
+
+  db:
+    image: mongo:4.2
+    command: mongod --logpath=/dev/null
