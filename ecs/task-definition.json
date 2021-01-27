@@ -1,0 +1,38 @@
+{
+  "family": "<will be filled in automatically>",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "<will be filled in automatically>",
+      "memoryReservation": 512,
+      "memory": 512,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "<will be filled in automatically>",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "app"
+        }
+      },
+      "links": [
+        "mongodb:mongodb"
+      ],
+      "essential": true
+    },
+    {
+      "name": "mongodb",
+      "image": "mongo:4.2",
+      "memoryReservation": 512,
+      "memory": 512,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "<will be filled in automatically>",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "mongodb"
+        }
+      },
+      "essential": true
+    }
+  ]
+}
