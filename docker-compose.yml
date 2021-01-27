@@ -2,10 +2,8 @@ version: '2'
 services:
   app:
     build: .
-    expose:
-      - "5000"
     ports:
-      - 5000:5000
+      - 8080:80
     links:
       - db:mongodb
 

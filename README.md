@@ -25,7 +25,7 @@ docker-compose up -d
 Then you should be able to perform OCM API Requests, e.g. using:
 
 ```bash
-curl http://localhost:5000/api/v3/poi
+curl http://localhost:8080/api/v3/poi
 ```
 
 Author
