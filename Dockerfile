@@ -1,15 +1,23 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-RUN git clone https://github.com/openchargemap/ocm-system \
-  && cd ocm-system/API/OCM.Net/OCM.API.Web \
-  && dotnet build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100 AS build
 
-WORKDIR /app/ocm-system/API/OCM.Net/OCM.API.Web
+WORKDIR /src
+RUN git clone https://github.com/openchargemap/ocm-system .
+# RUN dotnet restore "API/OCM.Net/OCM.API.Worker/OCM.API.Worker.csproj"
+
+WORKDIR /src/API/OCM.Net/OCM.API.Worker
 ADD files/ .
+RUN dotnet build "OCM.API.Worker.csproj" -c Release -o /app/build
 
-EXPOSE 5000
+FROM build AS publish
+RUN dotnet publish "OCM.API.Worker.csproj" -c Release -o /app/publish
 
-ENTRYPOINT ["dotnet", "run"]
-CMD ["-c", "Release", "--urls", "http://0.0.0.0:5000"]
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "OCM.API.Worker.dll"]
