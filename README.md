@@ -6,6 +6,7 @@ Abstract
 
 Docker Environment to host an OCM Mirror. See https://github.com/openchargemap/ocm-system/issues/148 and https://github.com/openchargemap/ocm-system/tree/master/API/OCM.Net/OCM.API.Worker.
 
+This also implements an additional `haproxy` container to add gzip compression and logging.
 
 Instructions
 ----

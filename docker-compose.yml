@@ -2,10 +2,17 @@ version: '2'
 services:
   app:
     build: .
+    links:
+      - db:mongodb
+
+  haproxy:
+    build:
+      context: .
+      dockerfile: haproxy.Dockerfile
     ports:
       - 8080:80
     links:
-      - db:mongodb
+      - app:app
 
   db:
     image: mongo:4.2
