@@ -7,12 +7,6 @@ Abstract
 Docker Environment to host an OCM Mirror. See https://github.com/openchargemap/ocm-system/issues/148 and https://github.com/openchargemap/ocm-system/tree/master/API/OCM.Net/OCM.API.Worker.
 
 
-Current Status
-----
-
-Currently this project is in a "proof of concept" status.
-
-
 Instructions
 ----
 
@@ -22,7 +16,7 @@ Make sure the docker subsysten is up and running. Then just do a docker-compose 
 docker-compose up -d
 ```
 
-Initially, this will build the docker image.
+Initially, this will also build the docker image.
 
 ### Re-Build the Docker Image, Build Args
 
