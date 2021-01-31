@@ -1,8 +1,12 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100 AS build
 
+ARG REPO_URL=https://github.com/openchargemap/ocm-system
+ARG REPO_BRANCH=master
+
 WORKDIR /src
-RUN git clone https://github.com/openchargemap/ocm-system .
+
+RUN git clone "${REPO_URL}" -b "${REPO_BRANCH}" .
 # RUN dotnet restore "API/OCM.Net/OCM.API.Worker/OCM.API.Worker.csproj"
 
 WORKDIR /src/API/OCM.Net/OCM.API.Worker

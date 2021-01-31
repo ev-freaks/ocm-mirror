@@ -16,10 +16,28 @@ Currently this project is in a "proof of concept" status.
 Instructions
 ----
 
-Make sure the docker subsysten is up and running.
+Make sure the docker subsysten is up and running. Then just do a docker-compose up:
 
 ```bash
 docker-compose up -d
+```
+
+Initially, this will build the docker image.
+
+### Re-Build the Docker Image, Build Args
+
+To rebuild the docker image, do:
+
+```bash
+docker-compose build
+```
+
+To use a different repo url and branch for the "ocm-system" repository you can leverage the existing `REPO_URL` and `REPO_BRANCH` docker build args:
+
+```bash
+docker-compose build \
+  --build-arg REPO_URL=https://github.com/ev-freaks/ocm-system.git \
+  --build-arg REPO_BRANCH=testing
 ```
 
 Then you should be able to perform OCM API Requests, e.g. using:
