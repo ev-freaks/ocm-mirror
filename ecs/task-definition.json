@@ -5,7 +5,12 @@
       "name": "app",
       "image": "<will be filled in automatically>",
       "memoryReservation": 512,
-      "memory": 512,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -22,8 +27,7 @@
     {
       "name": "mongodb",
       "image": "mongo:4.2",
-      "memoryReservation": 512,
-      "memory": 512,
+      "memoryReservation": 1024,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
