@@ -2,6 +2,12 @@ ifeq ($(AWS_PROFILE),)
   $(error please setup the AWS_PROFILE env var)
 endif
 
+OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
+OCM_SYSTEM_BRANCH := master
+
+#OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
+#OCM_SYSTEM_BRANCH := testing
+
 APP_NAME := ocm-mirror-prod
 TAG := latest
 AWS := aws
@@ -37,7 +43,7 @@ info:
 	$(info REPO_URL: ${REPO_URL})
 
 build-image:
-	docker build -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=https://github.com/ev-freaks/ocm-system.git --build-arg REPO_BRANCH=testing
+	docker build -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=${OCM_SYSTEM_REPO_URL} --build-arg REPO_BRANCH=${OCM_SYSTEM_BRANCH}
 
 push-image: ecr-login
 	docker push ${REPO_URL}:${TAG}
