@@ -2,22 +2,20 @@ ifeq ($(AWS_PROFILE),)
   $(error please setup the AWS_PROFILE env var)
 endif
 
+APP_NAME := ocm-mirror-prod
+ECS_CLUSTER_NAME := default
+APP_SERVICE_NAME := ${APP_NAME}
+
 OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
 OCM_SYSTEM_BRANCH := testing
 
 #OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
 #OCM_SYSTEM_BRANCH := master
 
-APP_NAME := ocm-mirror-prod
-TAG := latest
-AWS := aws
 REPO_NAME := ocm-mirror
 REPO_URL := $(shell aws ecr describe-repositories --repository-name ${REPO_NAME} --query 'repositories[0].repositoryUri' --output text)
+TAG := latest
 DOCKERFILE_PATH := ..
-TMPDIR := .tmp
-ECS_CLUSTER_NAME := default
-APP_SERVICE_NAME := ${APP_NAME}
-AWS_ACCOUNT := $(shell aws sts get-caller-identity --query Account --output text)
 
 .PNONY: clean init all info build-image ecr-login create-repo reload task-definition create-service update-service register-task
 
@@ -25,6 +23,8 @@ all: build-image push-image
 
 clean:
 	rm -rf ${TMPDIR}
+
+TMPDIR := .tmp
 
 ${TMPDIR}:
 	mkdir -p ${TMPDIR}
@@ -49,15 +49,17 @@ push-image: ecr-login
 	docker push ${REPO_URL}:${TAG}
 
 ecr-login:
-	${AWS} ecr get-login-password | docker login --username AWS --password-stdin ${REPO_URL}
+	aws ecr get-login-password | docker login --username AWS --password-stdin ${REPO_URL}
 
 create-repo:
-	${AWS} ecr create-repository --repository-name ${REPO_NAME}
+	aws ecr create-repository --repository-name ${REPO_NAME}
 
 reload:
-	${AWS} ecs update-service --force-new-deployment --service ${APP_SERVICE_NAME} --cluster ${ECS_CLUSTER_NAME}
+	aws ecs update-service --force-new-deployment --service ${APP_SERVICE_NAME} --cluster ${ECS_CLUSTER_NAME}
 
 # Important Notice: the folowing setup is quite tailored to our ECS setup on AWS, override the defaults accordingly.
+
+AWS_ACCOUNT := $(shell aws sts get-caller-identity --query Account --output text)
 
 register-task: ECSTaskRoleArn :=arn:aws:iam::${AWS_ACCOUNT}:role/${ECS_CLUSTER_NAME}-ecs-task
 register-task: ECSTaskExecRoleArn := arn:aws:iam::${AWS_ACCOUNT}:role/${ECS_CLUSTER_NAME}-ecs-task-exec
