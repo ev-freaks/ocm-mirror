@@ -2,11 +2,11 @@ ifeq ($(AWS_PROFILE),)
   $(error please setup the AWS_PROFILE env var)
 endif
 
-OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
-OCM_SYSTEM_BRANCH := master
+OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
+OCM_SYSTEM_BRANCH := testing
 
-#OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
-#OCM_SYSTEM_BRANCH := testing
+#OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
+#OCM_SYSTEM_BRANCH := master
 
 APP_NAME := ocm-mirror-prod
 TAG := latest
