@@ -6,11 +6,12 @@ APP_NAME := ocm-mirror-prod
 ECS_CLUSTER_NAME := default
 APP_SERVICE_NAME := ${APP_NAME}
 
-OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
-OCM_SYSTEM_BRANCH := testing
+# OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
+# OCM_SYSTEM_BRANCH := testing
 
-#OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
-#OCM_SYSTEM_BRANCH := master
+OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
+OCM_SYSTEM_BRANCH := master
+OCM_DOTNET_TAG := 5.0-alpine
 
 REPO_NAME := ocm-mirror
 REPO_URL := $(shell aws ecr describe-repositories --repository-name ${REPO_NAME} --query 'repositories[0].repositoryUri' --output text)
@@ -43,7 +44,7 @@ info:
 	$(info REPO_URL: ${REPO_URL})
 
 build-image:
-	docker build -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=${OCM_SYSTEM_REPO_URL} --build-arg REPO_BRANCH=${OCM_SYSTEM_BRANCH}
+	docker build -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=${OCM_SYSTEM_REPO_URL} --build-arg REPO_BRANCH=${OCM_SYSTEM_BRANCH} --build-arg DOTNET_TAG=${OCM_DOTNET_TAG}
 
 push-image: ecr-login
 	docker push ${REPO_URL}:${TAG}
