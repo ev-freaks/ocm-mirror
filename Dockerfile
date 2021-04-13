@@ -1,5 +1,5 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 
 ARG REPO_URL=https://github.com/openchargemap/ocm-system
 ARG REPO_BRANCH=master
