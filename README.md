@@ -35,6 +35,15 @@ docker-compose build \
   --build-arg REPO_BRANCH=testing
 ```
 
+OR, e.g.:
+
+```bash
+docker-compose build \
+  --build-arg DOTNET_TAG=5.0-alpine
+```
+
+To use the alpine flavour of the .net docker images (smaller footprint ~ 50%)
+
 Then you should be able to perform OCM API Requests, e.g. using:
 
 ```bash

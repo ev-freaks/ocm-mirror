@@ -1,5 +1,8 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+# see https://hub.docker.com/_/microsoft-dotnet-aspnet/ for available feature tags
+ARG DOTNET_TAG=5.0
+
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_TAG} AS base
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_TAG} AS build
 
 ARG REPO_URL=https://github.com/openchargemap/ocm-system
 ARG REPO_BRANCH=master
