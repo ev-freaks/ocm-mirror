@@ -1,0 +1,37 @@
+name: "Docker Build Test"
+
+on: [ push ]
+
+jobs:
+  # Build the image using various configurations
+  build_docker_image:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dotnet_tag: [ "5.0", "5.0-alpine" ]
+
+    steps:
+      -
+        name: "Checkout Sourcecode"
+        uses: actions/checkout@v2
+      -
+        name: "Set up Docker Buildx"
+        uses: docker/setup-buildx-action@v1
+      -
+        name: "Cache Docker layers"
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+      -
+        name: "Build Image for .NET ${{ matrix.dotnet_tag }})"
+        uses: docker/build-push-action@v2
+        with:
+          load: true
+          tags: ci/ev-freaks/ocm-mirror:${{ matrix.dotnet_tag }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          build-args: DOTNET_TAG=${{ matrix.dotnet_tag }}
