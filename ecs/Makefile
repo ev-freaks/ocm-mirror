@@ -6,11 +6,11 @@ APP_NAME := ocm-mirror-prod
 ECS_CLUSTER_NAME := chargev-io-t4g
 APP_SERVICE_NAME := ${APP_NAME}
 
-# OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
-# OCM_SYSTEM_BRANCH := testing
+OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
+OCM_SYSTEM_BRANCH := testing
 
-OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
-OCM_SYSTEM_BRANCH := master
+# OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
+# OCM_SYSTEM_BRANCH := master
 OCM_DOTNET_TAG := 6.0-alpine
 
 REPO_NAME := ocm-mirror
