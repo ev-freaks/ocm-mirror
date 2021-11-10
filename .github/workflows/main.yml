@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        dotnet_tag: [ "5.0", "5.0-alpine" ]
+        dotnet_tag: [ "6.0", "6.0-alpine" ]
 
     steps:
       -
