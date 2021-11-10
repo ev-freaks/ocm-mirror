@@ -3,7 +3,7 @@ ifeq ($(AWS_PROFILE),)
 endif
 
 APP_NAME := ocm-mirror-prod
-ECS_CLUSTER_NAME := chargev-io-t4g
+ECS_CLUSTER_NAME := default-t4g
 APP_SERVICE_NAME := ${APP_NAME}
 
 OCM_SYSTEM_REPO_URL := https://github.com/ev-freaks/ocm-system.git
