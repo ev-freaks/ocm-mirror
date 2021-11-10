@@ -11,7 +11,7 @@ APP_SERVICE_NAME := ${APP_NAME}
 
 OCM_SYSTEM_REPO_URL := https://github.com/openchargemap/ocm-system
 OCM_SYSTEM_BRANCH := master
-OCM_DOTNET_TAG := 5.0-alpine
+OCM_DOTNET_TAG := 6.0-alpine
 
 REPO_NAME := ocm-mirror
 REPO_URL := $(shell aws ecr describe-repositories --repository-name ${REPO_NAME} --query 'repositories[0].repositoryUri' --output text)
@@ -20,7 +20,7 @@ DOCKERFILE_PATH := ..
 
 .PNONY: clean init all info build-image ecr-login create-repo reload task-definition create-service update-service register-task
 
-all: build-image push-image
+all: ecr-login buildx
 
 clean:
 	rm -rf ${TMPDIR}
@@ -43,11 +43,14 @@ init: create-repo
 info:
 	$(info REPO_URL: ${REPO_URL})
 
-build-image:
-	docker build -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=${OCM_SYSTEM_REPO_URL} --build-arg REPO_BRANCH=${OCM_SYSTEM_BRANCH} --build-arg DOTNET_TAG=${OCM_DOTNET_TAG}
 
-push-image: ecr-login
-	docker push ${REPO_URL}:${TAG}
+PLATFORM := linux/amd64,linux/arm64
+
+buildx-init:
+	docker buildx ls | awk '{print $1}' | grep builder &>/dev/null || docker buildx create --name builder --use && docker buildx use builder
+
+buildx: buildx-init
+	docker buildx build --push --platform ${PLATFORM} -t ${REPO_URL}:latest ${DOCKERFILE_PATH} --build-arg REPO_URL=${OCM_SYSTEM_REPO_URL} --build-arg REPO_BRANCH=${OCM_SYSTEM_BRANCH} --build-arg DOTNET_TAG=${OCM_DOTNET_TAG}
 
 ecr-login:
 	aws ecr get-login-password | docker login --username AWS --password-stdin ${REPO_URL}
